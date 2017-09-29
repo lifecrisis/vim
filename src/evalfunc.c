@@ -5180,11 +5180,11 @@ f_gettabvar(typval_T *argvars, typval_T *rettv)
     tp = find_tabpage((int)get_tv_number_chk(&argvars[0], NULL));
     if (tp != NULL && varname != NULL)
     {
+	win_T *win = (tp == curtab) ? firstwin : tp->tp_firstwin;
+
 	/* Set tp to be our tabpage, temporarily.  Also set the window to the
 	 * first window in the tabpage, otherwise the window is not valid. */
-	if (switch_win(&oldcurwin, &oldtabpage,
-		    tp->tp_firstwin == NULL ? firstwin : tp->tp_firstwin, tp, TRUE)
-									== OK)
+	if (switch_win(&oldcurwin, &oldtabpage, win, tp, TRUE) == OK)
 	{
 	    /* look up the variable */
 	    /* Let gettabvar({nr}, "") return the "t:" dictionary. */
